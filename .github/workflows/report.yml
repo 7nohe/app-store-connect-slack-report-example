@@ -1,0 +1,23 @@
+name: Node.js CI
+
+on:
+ workflow_dispatch:
+ schedule:
+  - cron: "0 1 * * 1"
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Use Node.js 16
+      uses: actions/setup-node@v3
+      with:
+        node-version: 16
+        cache: 'npm'
+    - run: npm ci
+    - run: npm run notify
+      env:
+        API_KEY: ${{ secrets.API_KEY }}
+        ISSUER_ID: ${{ secrets.ISSUER_ID }}
+        PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
+        VENDOR_NUMBER: ${{ secrets.VENDOR_NUMBER }}
